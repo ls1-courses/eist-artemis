@@ -14,11 +14,11 @@ RUN echo "$LANG -- $LANGUAGE -- $LC_ALL" \
     && java --version \
     && javac --version
 
-ADD artemis-serverless-template /opt/artemis-serverless-template
+ADD artemis-dos-template /opt/artemis-dos-template
 
-RUN cd /opt/artemis-serverless-template && pwd && ls -la && ./gradlew clean build && ./gradlew clean test check && ./gradlew --version && ./gradlew --stop
+RUN cd /opt/artemis-dos-template && pwd && ls -la && ./gradlew clean build && ./gradlew clean test check && ./gradlew --version && ./gradlew --stop
 
-RUN rm -rf /opt/artemis-serverless-template
+RUN rm -rf /opt/artemis-dos-template
 
 # Copied from https://github.com/ls1intum/artemis-maven-docker/blob/adf5be335792a1cb4111672eaa0f085a517e3f8b/Dockerfile#L28
 CMD ["mvn"]
