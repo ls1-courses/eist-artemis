@@ -1,0 +1,96 @@
+apply plugin: 'java'
+sourceCompatibility = 17
+version = '1.0.0'
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+}
+
+def studentOutputDir = sourceSets.main.java.destinationDirectory.get()
+
+sourceSets {
+    main {
+        java {
+            srcDir 'assignment/src'
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test']
+        }
+    }
+}
+
+dependencies {
+    // Dependencies are copied from: https://bitbucket.ase.in.tum.de/projects/EIST24L02P02/repos/eist24l02p02-tests/browse/build.gradle
+
+    // Frontend dependencies
+    implementation(platform("software.amazon.awssdk:bom:2.21.1"))
+    implementation 'software.amazon.awssdk:s3:2.21.15'
+    implementation 'software.amazon.awssdk:lambda:2.21.15'
+    implementation 'software.amazon.awssdk:http-client-spi:2.21.15'
+    implementation 'software.amazon.awssdk:apache-client:2.21.15'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
+
+    // Backend dependencies
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.2'
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.12.576'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.576'
+    implementation 'com.amazonaws:aws-lambda-java-events:3.11.1'
+
+    // Test dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testImplementation 'org.json:json:2.15.1'
+    // Do not use a newer version of Mockito, since it breaks the Artemis test
+    // sandbox: "java.lang.IllegalStateException: Could not initialize plugin:
+    // interface org.mockito.plugins.MockMaker (alternate: null)"
+    testImplementation 'org.mockito:mockito-core:4.4.0'
+
+    // Artemis dependencies (for testing)
+    testImplementation 'de.tum.in.ase:artemis-java-test-sandbox:1.13.0'
+}
+
+task buildZip(type: Zip) {
+    into('lib') {
+        from(jar)
+        from(configurations.runtimeClasspath)
+    }
+}
+
+def forbiddenPackageFolders = [ //(2)
+                                "$studentOutputDir/ch/qos/logback/",
+                                "$studentOutputDir/com/github/javaparser/",
+                                "$studentOutputDir/com/intellij/",
+                                "$studentOutputDir/com/sun/",
+                                "$studentOutputDir/de/tum/in/test/api/",
+                                "$studentOutputDir/java/",
+                                "$studentOutputDir/javax/",
+                                "$studentOutputDir/jdk/",
+                                "$studentOutputDir/net/jqwik/",
+                                "$studentOutputDir/org/assertj/",
+                                "$studentOutputDir/org/apache/",
+                                "$studentOutputDir/org/eclipse/",
+                                "$studentOutputDir/org/gradle/",
+                                "$studentOutputDir/org/jacoco/",
+                                "$studentOutputDir/org/json/",
+                                "$studentOutputDir/org/junit/",
+                                "$studentOutputDir/org/opentest4j/",
+                                "$studentOutputDir/sun/",
+                                "$studentOutputDir/worker/org/gradle/",
+                                // Required for Mockito
+                                "$studentOutputDir/org/mockito/",
+                                "$studentOutputDir/net/bytebuddy/",
+                                "$studentOutputDir/org/objenesis/",
+]
+
+test {
+    doFirst { //(1)
+        for (String packageFolder in forbiddenPackageFolders) {
+            assert !file(packageFolder).exists(): "$packageFolder must not exist within the submission."
+        }
+    }
+    defaultCharacterEncoding = 'UTF-8'
+    testLogging.showStandardStreams = true
+    useJUnitPlatform()
+}
