@@ -24,7 +24,7 @@ sourceSets {
 }
 
 dependencies {
-    // Dependencies are copied from: https://bitbucket.ase.in.tum.de/projects/EIST24L02P02/repos/eist24l02p02-tests/browse/build.gradle
+    // Dependencies are originally copied from: https://bitbucket.ase.in.tum.de/projects/EIST24L02P02/repos/eist24l02p02-tests/browse/build.gradle
 
     // Frontend dependencies
     implementation(platform("software.amazon.awssdk:bom:2.21.1"))
@@ -39,8 +39,10 @@ dependencies {
     implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.12.576'
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.576'
     implementation 'com.amazonaws:aws-lambda-java-events:3.11.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+    implementation 'org.apache.maven:maven-model:3.8.6'
     implementation 'org.apache.commons:commons-lang3:3.13.0'
-    
+
     // Test dependencies
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
     testImplementation 'org.json:json:2.15.1'
