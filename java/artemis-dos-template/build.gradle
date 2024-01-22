@@ -5,6 +5,7 @@ compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 def studentOutputDir = sourceSets.main.java.destinationDirectory.get()
@@ -40,7 +41,7 @@ dependencies {
     implementation 'com.amazonaws:aws-lambda-java-events:3.11.1'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
     implementation 'org.apache.maven:maven-model:3.8.6'
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
 
     // Test dependencies
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
@@ -50,6 +51,9 @@ dependencies {
     // interface org.mockito.plugins.MockMaker (alternate: null)"
     testImplementation 'org.mockito:mockito-core:4.4.0'
 
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+    testImplementation 'org.assertj:assertj-core:3.11.1'
+    
     // Artemis dependencies (for testing)
     testImplementation 'de.tum.in.ase:artemis-java-test-sandbox:1.13.0'
 }
