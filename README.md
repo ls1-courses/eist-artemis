@@ -11,6 +11,7 @@ docker build -t ghcr.io/ls1-courses/artemis-dos-java:$(date --iso) -f java/Docke
 docker build -t ghcr.io/ls1-courses/artemis-dos-c:$(date --iso) -f c/Dockerfile ./c
 
 # upload images
+# For auth instructions, see: https://github.com/ls1-courses/internal-docs/tree/main/runner#to-upload-the-runner-image-to-the-container-registry
 docker push ghcr.io/ls1-courses/artemis-dos-java:$(date --iso)
 docker push ghcr.io/ls1-courses/artemis-dos-c:$(date --iso)
 ```
