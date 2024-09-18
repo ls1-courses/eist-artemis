@@ -14,7 +14,8 @@ RUN apt upgrade -y --autoremove
 RUN apt-get install -y sudo --option=Dpkg::Options::=--force-confdef
 
 RUN apt install -y --no-install-recommends python3 python3-pip python3-dev python3-psutil gcc git gdb make findutils bzip2 e2fsprogs
-
+COPY requirements.txt /requirements.txt
+RUN pip install -r /requirements.txt
 # clean up apt installs
 
 RUN apt clean && rm -rf /var/lib/apt/lists/*
